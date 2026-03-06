@@ -110,6 +110,7 @@ export default function App() {
     const rho = RESISTIVITY[`${material}-${insulation}` as keyof typeof RESISTIVITY];
     const sinPhi = Math.sin(Math.acos(cosPhi));
 
+    let optimalIndex: number | null = null;
     let optimalSection: number | null = null;
 
     const calculatedIz = SECTIONS.map((section, index) => {
@@ -128,6 +129,7 @@ export default function App() {
       
       if (isValid && optimalSection === null) {
         optimalSection = section;
+        optimalIndex = index;
       }
 
       return {
@@ -139,213 +141,226 @@ export default function App() {
         isValidIz,
         isValidDu,
         isValid,
-        isApplicable: izBase > 0
+        isApplicable: izBase > 0,
+        originalIndex: index
       };
     });
 
-    return { fTemp, fGroup, fSoil, fNeutral, fTotal, adjustedIb, calculatedIz, optimalSection };
+    // Filtrer pour ne garder que jusqu'à 1 section au-dessus de l'optimale
+    let filteredIz = calculatedIz;
+    if (optimalIndex !== null) {
+      filteredIz = calculatedIz.filter(row => row.originalIndex <= optimalIndex! + 1);
+    }
+
+    return { fTemp, fGroup, fSoil, fNeutral, fTotal, adjustedIb, calculatedIz: filteredIz, optimalSection };
   }, [environment, material, insulation, method, temperatureAir, temperatureGround, soilResistivity, trayCount, grouping, th3, ib, length, cosPhi, systemType]);
 
   return (
     <div className="min-h-screen bg-[#E4E3E0] text-[#141414] font-sans flex flex-col md:flex-row">
       
       {/* PANNEAU LATÉRAL : CONFIGURATION */}
-      <aside className="w-full md:w-80 bg-[#151619] text-white p-6 flex flex-col shadow-2xl z-10 h-screen overflow-y-auto custom-scrollbar">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-[#F27D26] rounded-lg">
-            <Zap size={24} className="text-white" />
+      <aside className="w-full md:w-[380px] bg-[#151619] text-white p-6 md:p-8 flex flex-col shadow-2xl z-10 h-screen overflow-y-auto custom-scrollbar border-r border-gray-800">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="p-3 bg-[#F27D26] rounded-xl shadow-lg shadow-orange-500/20">
+            <Zap size={28} className="text-white" />
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-tight tracking-tight">Calculateur Iz & ΔU</h1>
-            <p className="text-xs text-gray-400 font-mono uppercase tracking-wider">Norme NF C 15-100</p>
+            <h1 className="font-bold text-xl leading-tight tracking-tight">Calculateur Iz & ΔU</h1>
+            <p className="text-xs text-gray-400 font-mono uppercase tracking-widest mt-1">Norme NF C 15-100</p>
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-10">
           
           {/* Section : Câble */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-2 flex items-center gap-2">
-              <Settings2 size={14} /> 1. Câble & Pose
+          <div className="space-y-5">
+            <h2 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-3 flex items-center gap-2">
+              <Settings2 size={16} /> 1. Câble & Pose
             </h2>
             
-            <div>
-              <label className="block text-xs mb-1 text-gray-300">Environnement</label>
-              <select value={environment} onChange={handleEnvironmentChange} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                <option value="air">À l'air libre (Méthodes A, B, C, E, F)</option>
-                <option value="ground">Enterré (Méthode D)</option>
-              </select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-4">
               <div>
-                <label className="block text-xs mb-1 text-gray-300">Matériau</label>
-                <select value={material} onChange={(e) => setMaterial(e.target.value as 'Cu' | 'Al')} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                  <option value="Cu">Cuivre (Cu)</option>
-                  <option value="Al">Aluminium (Al)</option>
+                <label className="block text-xs font-medium mb-1.5 text-gray-300">Environnement</label>
+                <select value={environment} onChange={handleEnvironmentChange} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                  <option value="air">À l'air libre (Méthodes A, B, C, E, F)</option>
+                  <option value="ground">Enterré (Méthode D)</option>
                 </select>
               </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Matériau</label>
+                  <select value={material} onChange={(e) => setMaterial(e.target.value as 'Cu' | 'Al')} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                    <option value="Cu">Cuivre (Cu)</option>
+                    <option value="Al">Aluminium (Al)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Isolant</label>
+                  <select value={insulation} onChange={(e) => setInsulation(e.target.value as 'PVC' | 'PR')} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                    <option value="PVC">PVC (70°C)</option>
+                    <option value="PR">PR/EPR (90°C)</option>
+                  </select>
+                </div>
+              </div>
+
               <div>
-                <label className="block text-xs mb-1 text-gray-300">Isolant</label>
-                <select value={insulation} onChange={(e) => setInsulation(e.target.value as 'PVC' | 'PR')} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                  <option value="PVC">PVC (70°C)</option>
-                  <option value="PR">PR/EPR (90°C)</option>
+                <label className="block text-xs font-medium mb-1.5 text-gray-300">Type de câble</label>
+                <select value={cableType} onChange={handleCableTypeChange} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                  <option value="multi">Câble multiconducteur</option>
+                  <option value="mono">Câbles monoconducteurs</option>
                 </select>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs mb-1 text-gray-300">Type de câble</label>
-              <select value={cableType} onChange={handleCableTypeChange} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                <option value="multi">Câble multiconducteur</option>
-                <option value="mono">Câbles monoconducteurs</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs mb-1 text-gray-300">Méthode de référence</label>
-              <select value={method} onChange={(e) => setMethod(e.target.value as any)} disabled={environment === 'ground'} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26] disabled:opacity-50">
-                {environment === 'ground' ? (
-                  <option value="D">D (Câbles enterrés)</option>
-                ) : (
-                  <>
-                    <option value="A">A (Encastré dans paroi isolante)</option>
-                    <option value="B">B (Sous conduit en apparent)</option>
-                    <option value="C">C (Fixé sur paroi)</option>
-                    {cableType === 'multi' && <option value="E">E (Sur chemin de câble perforé)</option>}
-                    {cableType === 'mono' && <option value="F">F (Câbles jointifs sur tablette)</option>}
-                  </>
-                )}
-              </select>
+              <div>
+                <label className="block text-xs font-medium mb-1.5 text-gray-300">Méthode de référence</label>
+                <select value={method} onChange={(e) => setMethod(e.target.value as any)} disabled={environment === 'ground'} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                  {environment === 'ground' ? (
+                    <option value="D">D (Câbles enterrés)</option>
+                  ) : (
+                    <>
+                      <option value="A">A (Encastré dans paroi isolante)</option>
+                      <option value="B">B (Sous conduit en apparent)</option>
+                      <option value="C">C (Fixé sur paroi)</option>
+                      {cableType === 'multi' && <option value="E">E (Sur chemin de câble perforé)</option>}
+                      {cableType === 'mono' && <option value="F">F (Câbles jointifs sur tablette)</option>}
+                    </>
+                  )}
+                </select>
+              </div>
             </div>
           </div>
 
           {/* Section : Environnement */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-2 mt-4">
-              2. Environnement
+          <div className="space-y-5">
+            <h2 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-3 flex items-center gap-2">
+              <Layers size={16} /> 2. Environnement
             </h2>
             
-            {environment === 'air' ? (
-              <>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-xs mb-1 text-gray-300">Température</label>
-                    <select value={temperatureAir} onChange={(e) => setTemperatureAir(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                      {[10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(t => (
-                        <option key={t} value={t}>{t} °C</option>
-                      ))}
-                    </select>
+            <div className="space-y-4">
+              {environment === 'air' ? (
+                <>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium mb-1.5 text-gray-300">Température</label>
+                      <select value={temperatureAir} onChange={(e) => setTemperatureAir(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                        {[10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(t => (
+                          <option key={t} value={t}>{t} °C</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium mb-1.5 text-gray-300">Groupement</label>
+                      <select value={grouping} onChange={(e) => setGrouping(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                        <option value="1">1 circuit (Seul)</option>
+                        <option value="2">2 circuits</option>
+                        <option value="3">3 circuits</option>
+                        <option value="4">4 circuits</option>
+                        <option value="5">5 circuits</option>
+                        <option value="6">6 circuits</option>
+                        <option value="7">7 circuits</option>
+                        <option value="8">8 circuits</option>
+                        <option value="9">9 circuits</option>
+                        <option value="10">10 circuits</option>
+                        <option value="12">12 circuits</option>
+                        <option value="14">14 circuits</option>
+                        <option value="16">16 circuits</option>
+                        <option value="18">18 circuits</option>
+                        <option value="20">20 circuits</option>
+                      </select>
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-xs mb-1 text-gray-300">Groupement (Nb de circuits)</label>
-                    <select value={grouping} onChange={(e) => setGrouping(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                      <option value="1">1 circuit (Seul)</option>
-                      <option value="2">2 circuits</option>
-                      <option value="3">3 circuits</option>
-                      <option value="4">4 circuits</option>
-                      <option value="5">5 circuits</option>
-                      <option value="6">6 circuits</option>
-                      <option value="7">7 circuits</option>
-                      <option value="8">8 circuits</option>
-                      <option value="9">9 circuits</option>
-                      <option value="10">10 circuits</option>
-                      <option value="12">12 circuits</option>
-                      <option value="14">14 circuits</option>
-                      <option value="16">16 circuits</option>
-                      <option value="18">18 circuits</option>
-                      <option value="20">20 circuits</option>
+                    <label className="block text-xs font-medium mb-1.5 text-gray-300">Disposition (Tablettes/Échelles)</label>
+                    <select value={trayCount} onChange={(e) => setTrayCount(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                      <option value="0">Standard (Paroi, Goulotte...)</option>
+                      <option value="1">1 tablette / chemin de câble</option>
+                      <option value="2">2 tablettes superposées</option>
+                      <option value="3">3 tablettes superposées</option>
                     </select>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-xs mb-1 text-gray-300">Disposition (Tablettes/Échelles)</label>
-                  <select value={trayCount} onChange={(e) => setTrayCount(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                    <option value="0">Standard (Paroi, Goulotte...)</option>
-                    <option value="1">1 tablette / chemin de câble</option>
-                    <option value="2">2 tablettes superposées</option>
-                    <option value="3">3 tablettes superposées</option>
-                  </select>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-xs mb-1 text-gray-300">Température Sol</label>
-                    <select value={temperatureGround} onChange={(e) => setTemperatureGround(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                      {[10, 15, 20, 25, 30].map(t => (
-                        <option key={t} value={t}>{t} °C</option>
-                      ))}
-                    </select>
+                </>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium mb-1.5 text-gray-300">Température Sol</label>
+                      <select value={temperatureGround} onChange={(e) => setTemperatureGround(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                        {[10, 15, 20, 25, 30].map(t => (
+                          <option key={t} value={t}>{t} °C</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium mb-1.5 text-gray-300">Groupement</label>
+                      <select value={grouping} onChange={(e) => setGrouping(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                        <option value="1">1 circuit (Seul)</option>
+                        <option value="2">2 circuits</option>
+                        <option value="3">3 circuits</option>
+                        <option value="4">4 circuits</option>
+                        <option value="5">5 circuits</option>
+                        <option value="6">6 circuits</option>
+                        <option value="7">7 circuits</option>
+                        <option value="8">8 circuits</option>
+                        <option value="9">9 circuits</option>
+                      </select>
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-xs mb-1 text-gray-300">Groupement (Nb de circuits)</label>
-                    <select value={grouping} onChange={(e) => setGrouping(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                      <option value="1">1 circuit (Seul)</option>
-                      <option value="2">2 circuits</option>
-                      <option value="3">3 circuits</option>
-                      <option value="4">4 circuits</option>
-                      <option value="5">5 circuits</option>
-                      <option value="6">6 circuits</option>
-                      <option value="7">7 circuits</option>
-                      <option value="8">8 circuits</option>
-                      <option value="9">9 circuits</option>
+                    <label className="block text-xs font-medium mb-1.5 text-gray-300">Résistivité thermique du sol</label>
+                    <select value={soilResistivity} onChange={(e) => setSoilResistivity(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                      <option value="0.4">0.4 K.m/W (Très humide)</option>
+                      <option value="0.7">0.7 K.m/W (Humide)</option>
+                      <option value="1.0">1.0 K.m/W (Normal/Standard)</option>
+                      <option value="1.5">1.5 K.m/W (Sec)</option>
+                      <option value="2.0">2.0 K.m/W (Très sec)</option>
+                      <option value="3.0">3.0 K.m/W (Cendres/Mâchefer)</option>
                     </select>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-xs mb-1 text-gray-300">Résistivité thermique du sol</label>
-                  <select value={soilResistivity} onChange={(e) => setSoilResistivity(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                    <option value="0.4">0.4 K.m/W (Très humide)</option>
-                    <option value="0.7">0.7 K.m/W (Humide)</option>
-                    <option value="1.0">1.0 K.m/W (Normal/Standard)</option>
-                    <option value="1.5">1.5 K.m/W (Sec)</option>
-                    <option value="2.0">2.0 K.m/W (Très sec)</option>
-                    <option value="3.0">3.0 K.m/W (Cendres/Mâchefer)</option>
-                  </select>
-                </div>
-              </>
-            )}
+                </>
+              )}
 
-            <div>
-              <label className="block text-xs mb-1 text-gray-300">Taux d'harmoniques (TH3) - Neutre</label>
-              <select value={th3} onChange={(e) => setTh3(e.target.value as any)} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                <option value="<15">TH3 ≤ 15% (Neutre non chargé)</option>
-                <option value="15-33">15% &lt; TH3 ≤ 33% (Facteur 0.86)</option>
-                <option value=">33">TH3 &gt; 33% (Surdimensionnement)</option>
-              </select>
+              <div>
+                <label className="block text-xs font-medium mb-1.5 text-gray-300">Taux d'harmoniques (TH3) - Neutre</label>
+                <select value={th3} onChange={(e) => setTh3(e.target.value as any)} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                  <option value="<15">TH3 ≤ 15% (Neutre non chargé)</option>
+                  <option value="15-33">15% &lt; TH3 ≤ 33% (Facteur 0.86)</option>
+                  <option value=">33">TH3 &gt; 33% (Surdimensionnement)</option>
+                </select>
+              </div>
             </div>
           </div>
 
           {/* Section : Circuit */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-2 mt-4">
-              3. Paramètres du Circuit
+          <div className="space-y-5">
+            <h2 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-3 mt-4 flex items-center gap-2">
+              <Zap size={16} /> 3. Paramètres du Circuit
             </h2>
             
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-xs mb-1 text-gray-300">Réseau</label>
-                <select value={systemType} onChange={(e) => setSystemType(e.target.value as any)} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                  <option value="mono">Mono (230V)</option>
-                  <option value="tri">Tri (400V)</option>
-                </select>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Réseau</label>
+                  <select value={systemType} onChange={(e) => setSystemType(e.target.value as any)} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                    <option value="mono">Mono (230V)</option>
+                    <option value="tri">Tri (400V)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Courant Ib (A)</label>
+                  <input type="number" min="1" value={ib} onChange={(e) => setIb(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
+                </div>
               </div>
-              <div>
-                <label className="block text-xs mb-1 text-gray-300">Courant Ib (A)</label>
-                <input type="number" min="1" value={ib} onChange={(e) => setIb(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]" />
-              </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-xs mb-1 text-gray-300">Longueur (m)</label>
-                <input type="number" min="1" value={length} onChange={(e) => setLength(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]" />
-              </div>
-              <div>
-                <label className="block text-xs mb-1 text-gray-300">Cos(φ)</label>
-                <input type="number" min="0.1" max="1" step="0.05" value={cosPhi} onChange={(e) => setCosPhi(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]" />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Longueur (m)</label>
+                  <input type="number" min="1" value={length} onChange={(e) => setLength(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Cos(φ)</label>
+                  <input type="number" min="0.1" max="1" step="0.05" value={cosPhi} onChange={(e) => setCosPhi(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
+                </div>
               </div>
             </div>
           </div>
