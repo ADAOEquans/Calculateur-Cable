@@ -1,20 +1,54 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Calculateur Câble ⚡
 
-# Run and deploy your AI Studio app
+Application de calcul rapide de section de câble électrique.
 
-This contains everything you need to run your app locally.
+## 🚀 Fonctionnalités
+- Calcul rapide et précis des sections de câbles.
+- Interface utilisateur moderne et réactive.
+- *(Ajoutez ici d'autres fonctionnalités spécifiques de votre application)*
 
-View your app in AI Studio: https://ai.studio/apps/b08c5994-a76e-44c9-a357-13ee5878eed9
+## 🛠️ Technologies utilisées
+- **Frontend :** React 19, Vite, Tailwind CSS 4, Framer Motion
+- **Backend :** Express, SQLite (better-sqlite3)
+- **Langage :** TypeScript
 
-## Run Locally
+## 📦 Prérequis
+- [Node.js](https://nodejs.org/) (version 18 ou supérieure recommandée)
+- npm ou yarn
 
-**Prerequisites:**  Node.js
+## ⚙️ Installation et Démarrage
 
+1. **Cloner le dépôt :**
+   ```bash
+   git clone https://github.com/votre-nom-utilisateur/calculateur-cable.git
+   cd calculateur-cable
+   ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+2. **Installer les dépendances :**
+   ```bash
+   npm install
+   ```
+
+3. **Configurer l'environnement :**
+   Copiez le fichier d'exemple et remplissez vos variables d'environnement si nécessaire.
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Démarrer le serveur de développement :**
+   ```bash
+   npm run dev
+   ```
+   L'application sera accessible sur `http://localhost:3000`.
+
+## 🏗️ Scripts disponibles
+- `npm run dev` : Lance le serveur de développement.
+- `npm run build` : Compile l'application pour la production.
+- `npm run preview` : Prévisualise la version de production localement.
+- `npm run lint` : Vérifie les erreurs TypeScript.
+
+## 🤝 Contribution
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une *issue* ou soumettre une *pull request*.
+
+## 📄 Licence
+Ce projet est sous licence MIT.
