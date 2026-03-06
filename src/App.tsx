@@ -1,6 +1,26 @@
-import React, { useState, useMemo } from 'react';
-import { Settings2, Info, AlertTriangle, Zap, CheckCircle2, XCircle, Layers } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Settings2, Info, AlertTriangle, Zap, CheckCircle2, XCircle, Layers, Save, FolderOpen } from 'lucide-react';
 import { SECTIONS, BASE_CURRENTS, TEMP_FACTORS, TEMP_FACTORS_GROUND, SOIL_RESISTIVITY_FACTORS, GROUP_FACTORS, GROUP_FACTORS_TRAYS_MULTI, GROUP_FACTORS_TRAYS_MONO, GROUP_FACTORS_GROUND, RESISTIVITY, REACTANCE } from './data';
+
+// --- TYPES POUR LA SAUVEGARDE ---
+interface SavedEnvironment {
+  id: string;
+  title: string;
+  date: string;
+  data: {
+    environment: 'air' | 'ground';
+    material: 'Cu' | 'Al';
+    insulation: 'PVC' | 'PR';
+    cableType: 'multi' | 'mono';
+    method: 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+    temperatureAir: number;
+    trayCount: number;
+    temperatureGround: number;
+    soilResistivity: number;
+    grouping: number;
+    th3: '<15' | '15-33' | '>33';
+  };
+}
 
 export default function App() {
   // --- ÉTATS DE L'APPLICATION ---
@@ -26,6 +46,77 @@ export default function App() {
   const [length, setLength] = useState<number>(50); // Longueur (m)
   const [cosPhi, setCosPhi] = useState<number>(0.8); // Facteur de puissance
   const [systemType, setSystemType] = useState<'mono' | 'tri'>('tri'); // Mono 230V ou Tri 400V
+
+  // --- ÉTATS POUR LA SAUVEGARDE ---
+  const [savedEnvironments, setSavedEnvironments] = useState<SavedEnvironment[]>([]);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
+  const [saveTitle, setSaveTitle] = useState('');
+  const [selectedEnvToLoad, setSelectedEnvToLoad] = useState<SavedEnvironment | null>(null);
+
+  // Charger les sauvegardes au démarrage
+  useEffect(() => {
+    const saved = localStorage.getItem('cableCalcEnvironments');
+    if (saved) {
+      try {
+        setSavedEnvironments(JSON.parse(saved));
+      } catch (e) {
+        console.error("Erreur lors du chargement des sauvegardes", e);
+      }
+    }
+  }, []);
+
+  // --- GESTIONNAIRES DE SAUVEGARDE ---
+  const handleSaveEnvironment = () => {
+    if (!saveTitle.trim()) return;
+
+    const newSave: SavedEnvironment = {
+      id: Date.now().toString(),
+      title: saveTitle.trim(),
+      date: new Date().toLocaleDateString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+      data: {
+        environment, material, insulation, cableType, method,
+        temperatureAir, trayCount, temperatureGround, soilResistivity, grouping, th3
+      }
+    };
+
+    const updatedSaves = [newSave, ...savedEnvironments];
+    setSavedEnvironments(updatedSaves);
+    localStorage.setItem('cableCalcEnvironments', JSON.stringify(updatedSaves));
+    
+    setIsSaveModalOpen(false);
+    setSaveTitle('');
+  };
+
+  const handleDeleteSave = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updatedSaves = savedEnvironments.filter(env => env.id !== id);
+    setSavedEnvironments(updatedSaves);
+    localStorage.setItem('cableCalcEnvironments', JSON.stringify(updatedSaves));
+    if (selectedEnvToLoad?.id === id) {
+      setSelectedEnvToLoad(null);
+    }
+  };
+
+  const confirmLoadEnvironment = () => {
+    if (!selectedEnvToLoad) return;
+    
+    const d = selectedEnvToLoad.data;
+    setEnvironment(d.environment);
+    setMaterial(d.material);
+    setInsulation(d.insulation);
+    setCableType(d.cableType);
+    setMethod(d.method);
+    setTemperatureAir(d.temperatureAir);
+    setTrayCount(d.trayCount);
+    setTemperatureGround(d.temperatureGround);
+    setSoilResistivity(d.soilResistivity);
+    setGrouping(d.grouping);
+    setTh3(d.th3);
+
+    setIsLoadModalOpen(false);
+    setSelectedEnvToLoad(null);
+  };
 
   const handleEnvironmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const env = e.target.value as 'air' | 'ground';
@@ -168,6 +259,22 @@ export default function App() {
             <h1 className="font-bold text-xl leading-tight tracking-tight">Calculateur Iz & ΔU</h1>
             <p className="text-xs text-gray-400 font-mono uppercase tracking-widest mt-1">Norme NF C 15-100</p>
           </div>
+        </div>
+
+        {/* Actions de sauvegarde / chargement */}
+        <div className="flex gap-2 mb-8">
+          <button 
+            onClick={() => setIsSaveModalOpen(true)}
+            className="flex-1 flex items-center justify-center gap-2 bg-[#222429] hover:bg-[#2a2c33] text-gray-300 hover:text-white py-2 px-3 rounded-lg border border-gray-700 transition-colors text-sm font-medium"
+          >
+            <Save size={16} /> Sauvegarder
+          </button>
+          <button 
+            onClick={() => setIsLoadModalOpen(true)}
+            className="flex-1 flex items-center justify-center gap-2 bg-[#222429] hover:bg-[#2a2c33] text-gray-300 hover:text-white py-2 px-3 rounded-lg border border-gray-700 transition-colors text-sm font-medium"
+          >
+            <FolderOpen size={16} /> Charger
+          </button>
         </div>
 
         <div className="space-y-10">
@@ -501,6 +608,121 @@ export default function App() {
 
         </div>
       </main>
+
+      {/* MODALE DE SAUVEGARDE */}
+      {isSaveModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Sauvegarder l'environnement</h3>
+              <p className="text-sm text-gray-500 mb-6">Donnez un titre à cette configuration pour la retrouver facilement plus tard.</p>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Titre de la sauvegarde</label>
+                  <input 
+                    type="text" 
+                    value={saveTitle}
+                    onChange={(e) => setSaveTitle(e.target.value)}
+                    placeholder="Ex: Local TGBT, Cheminement extérieur..."
+                    className="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-900 focus:outline-none focus:border-[#F27D26] focus:ring-2 focus:ring-[#F27D26]/20 transition-all"
+                    autoFocus
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t border-gray-100">
+              <button 
+                onClick={() => setIsSaveModalOpen(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Annuler
+              </button>
+              <button 
+                onClick={handleSaveEnvironment}
+                disabled={!saveTitle.trim()}
+                className="px-5 py-2 bg-[#F27D26] hover:bg-[#e06c1b] text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <Save size={16} /> Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODALE DE CHARGEMENT */}
+      {isLoadModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[80vh]">
+            <div className="p-6 pb-4 border-b border-gray-100">
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Charger un environnement</h3>
+              <p className="text-sm text-gray-500">Sélectionnez une configuration sauvegardée pour l'appliquer.</p>
+            </div>
+            
+            <div className="overflow-y-auto p-6 flex-1 bg-gray-50/50">
+              {savedEnvironments.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <FolderOpen size={32} className="mx-auto mb-3 text-gray-300" />
+                  <p>Aucune sauvegarde disponible.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {savedEnvironments.map((env) => (
+                    <div 
+                      key={env.id}
+                      onClick={() => setSelectedEnvToLoad(env)}
+                      className={`p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center ${
+                        selectedEnvToLoad?.id === env.id 
+                          ? 'border-[#F27D26] bg-orange-50 ring-1 ring-[#F27D26]' 
+                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                      }`}
+                    >
+                      <div>
+                        <h4 className="font-semibold text-gray-900">{env.title}</h4>
+                        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                          <span>{env.date}</span>
+                          <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                          <span>{env.data.environment === 'air' ? 'Air libre' : 'Enterré'}</span>
+                          <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                          <span>{env.data.material} / {env.data.insulation}</span>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={(e) => handleDeleteSave(env.id, e)}
+                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Supprimer cette sauvegarde"
+                      >
+                        <XCircle size={18} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div className="bg-white px-6 py-4 flex justify-end gap-3 border-t border-gray-100">
+              <button 
+                onClick={() => {
+                  setIsLoadModalOpen(false);
+                  setSelectedEnvToLoad(null);
+                }}
+                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Annuler
+              </button>
+              <button 
+                onClick={confirmLoadEnvironment}
+                disabled={!selectedEnvToLoad}
+                className="px-5 py-2 bg-[#F27D26] hover:bg-[#e06c1b] text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <FolderOpen size={16} /> Charger {selectedEnvToLoad && `"${selectedEnvToLoad.title}"`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
