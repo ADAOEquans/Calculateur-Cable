@@ -331,39 +331,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Section : Circuit */}
-          <div className="space-y-5">
-            <h2 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 pb-3 mt-4 flex items-center gap-2">
-              <Zap size={16} /> 3. Paramètres du Circuit
-            </h2>
-            
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Réseau</label>
-                  <select value={systemType} onChange={(e) => setSystemType(e.target.value as any)} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
-                    <option value="mono">Mono (230V)</option>
-                    <option value="tri">Tri (400V)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Courant Ib (A)</label>
-                  <input type="number" min="1" value={ib} onChange={(e) => setIb(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Longueur (m)</label>
-                  <input type="number" min="1" value={length} onChange={(e) => setLength(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium mb-1.5 text-gray-300">Cos(φ)</label>
-                  <input type="number" min="0.1" max="1" step="0.05" value={cosPhi} onChange={(e) => setCosPhi(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
       </aside>
@@ -372,6 +340,35 @@ export default function App() {
       <main className="flex-1 p-4 md:p-8 overflow-y-auto h-screen">
         <div className="max-w-5xl mx-auto space-y-6">
           
+          {/* Section : Paramètres du Circuit (déplacée ici pour accès rapide) */}
+          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+            <h2 className="text-[11px] font-bold text-gray-500 uppercase tracking-widest border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+              <Zap size={16} className="text-[#F27D26]" /> Paramètres du Circuit
+            </h2>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-xs font-medium mb-1.5 text-gray-600">Réseau</label>
+                <select value={systemType} onChange={(e) => setSystemType(e.target.value as any)} className="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all">
+                  <option value="mono">Mono (230V)</option>
+                  <option value="tri">Tri (400V)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1.5 text-gray-600">Courant Ib (A)</label>
+                <input type="number" min="1" value={ib} onChange={(e) => setIb(Number(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1.5 text-gray-600">Longueur (m)</label>
+                <input type="number" min="1" value={length} onChange={(e) => setLength(Number(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1.5 text-gray-600">Cos(φ)</label>
+                <input type="number" min="0.1" max="1" step="0.05" value={cosPhi} onChange={(e) => setCosPhi(Number(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#F27D26] focus:ring-1 focus:ring-[#F27D26] transition-all" />
+              </div>
+            </div>
+          </div>
+
           <header className="flex justify-between items-end">
             <div>
               <h2 className="text-3xl font-light tracking-tight mb-1">Analyse de la canalisation</h2>
