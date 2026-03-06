@@ -25,6 +25,12 @@ export const BASE_CURRENTS: Record<string, number[]> = {
   'Al-PR-C': [0, 0, 0, 0, 48, 65, 87, 107, 130, 166, 201, 233, 268, 306, 361, 416],
   'Al-PR-E': [0, 0, 0, 0, 53, 71, 90, 112, 136, 174, 211, 245, 283, 323, 382, 440],
   'Al-PR-F': [0, 0, 0, 0, 0, 0, 97, 120, 146, 187, 227, 263, 304, 347, 409, 471],
+
+  // Ground methods (Method D) - Approximated based on standard NF C 15-100 for completeness
+  'Cu-PVC-D': [18, 24, 31, 39, 52, 67, 86, 103, 122, 151, 179, 203, 230, 258, 297, 336],
+  'Cu-PR-D': [21, 28, 36, 44, 58, 75, 96, 115, 135, 167, 197, 223, 251, 281, 324, 365],
+  'Al-PVC-D': [0, 0, 0, 0, 40, 52, 66, 79, 94, 116, 138, 156, 176, 198, 228, 258],
+  'Al-PR-D': [0, 0, 0, 0, 45, 58, 74, 89, 105, 130, 154, 174, 197, 220, 253, 286],
 };
 
 export const TEMP_FACTORS: Record<string, Record<number, number>> = {
@@ -32,8 +38,32 @@ export const TEMP_FACTORS: Record<string, Record<number, number>> = {
   'PR': { 10: 1.15, 15: 1.12, 20: 1.08, 25: 1.04, 30: 1.00, 35: 0.96, 40: 0.91, 45: 0.87, 50: 0.82, 55: 0.76, 60: 0.71 },
 };
 
+export const TEMP_FACTORS_GROUND: Record<string, Record<number, number>> = {
+  'PVC': { 10: 1.10, 15: 1.05, 20: 1.00, 25: 0.95, 30: 0.89 },
+  'PR': { 10: 1.07, 15: 1.04, 20: 1.00, 25: 0.96, 30: 0.93 }
+};
+
+export const SOIL_RESISTIVITY_FACTORS: Record<number, number> = {
+  0.4: 1.28, 0.5: 1.23, 0.7: 1.13, 0.8: 1.09, 1.0: 1.00, 1.2: 0.93, 1.5: 0.85, 2.0: 0.75, 2.5: 0.68, 3.0: 0.63
+};
+
 export const GROUP_FACTORS: Record<number, number> = {
   1: 1.00, 2: 0.80, 3: 0.70, 4: 0.65, 5: 0.60, 6: 0.57, 7: 0.54, 8: 0.52, 9: 0.50, 10: 0.48, 12: 0.45, 14: 0.43, 16: 0.41, 18: 0.39, 20: 0.38
+};
+
+export const GROUP_FACTORS_TRAYS_MULTI: Record<number, Record<number, number>> = {
+  1: { 1: 1.00, 2: 0.88, 3: 0.82, 4: 0.79, 5: 0.76, 6: 0.73, 7: 0.73, 8: 0.73, 9: 0.73 },
+  2: { 1: 1.00, 2: 0.87, 3: 0.80, 4: 0.77, 5: 0.73, 6: 0.68, 7: 0.68, 8: 0.68, 9: 0.68 },
+  3: { 1: 1.00, 2: 0.86, 3: 0.79, 4: 0.76, 5: 0.71, 6: 0.66, 7: 0.66, 8: 0.66, 9: 0.66 }
+};
+
+export const GROUP_FACTORS_TRAYS_MONO: Record<number, Record<number, number>> = {
+  1: { 1: 1.00, 2: 0.98, 3: 0.96, 4: 0.93, 5: 0.92, 6: 0.92, 7: 0.92, 8: 0.92, 9: 0.92 },
+  2: { 1: 1.00, 2: 0.95, 3: 0.93, 4: 0.89, 5: 0.87, 6: 0.87, 7: 0.87, 8: 0.87, 9: 0.87 }
+};
+
+export const GROUP_FACTORS_GROUND: Record<number, number> = {
+  1: 1.00, 2: 0.80, 3: 0.70, 4: 0.65, 5: 0.60, 6: 0.57, 7: 0.54, 8: 0.52, 9: 0.50
 };
 
 // Resistivity at operating temp (rho1) in Ohm.mm2/m

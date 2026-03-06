@@ -1,14 +1,23 @@
 import React, { useState, useMemo } from 'react';
-import { Settings2, Info, AlertTriangle, Zap, CheckCircle2, XCircle } from 'lucide-react';
-import { SECTIONS, BASE_CURRENTS, TEMP_FACTORS, GROUP_FACTORS, RESISTIVITY, REACTANCE } from './data';
+import { Settings2, Info, AlertTriangle, Zap, CheckCircle2, XCircle, Layers } from 'lucide-react';
+import { SECTIONS, BASE_CURRENTS, TEMP_FACTORS, TEMP_FACTORS_GROUND, SOIL_RESISTIVITY_FACTORS, GROUP_FACTORS, GROUP_FACTORS_TRAYS_MULTI, GROUP_FACTORS_TRAYS_MONO, GROUP_FACTORS_GROUND, RESISTIVITY, REACTANCE } from './data';
 
 export default function App() {
   // --- ÉTATS DE L'APPLICATION ---
+  const [environment, setEnvironment] = useState<'air' | 'ground'>('air');
   const [material, setMaterial] = useState<'Cu' | 'Al'>('Cu');
   const [insulation, setInsulation] = useState<'PVC' | 'PR'>('PVC');
   const [cableType, setCableType] = useState<'multi' | 'mono'>('multi');
-  const [method, setMethod] = useState<'A' | 'B' | 'C' | 'E' | 'F'>('B');
-  const [temperature, setTemperature] = useState<number>(30);
+  const [method, setMethod] = useState<'A' | 'B' | 'C' | 'D' | 'E' | 'F'>('B');
+  
+  // Paramètres Air
+  const [temperatureAir, setTemperatureAir] = useState<number>(30);
+  const [trayCount, setTrayCount] = useState<number>(0); // 0 = standard, 1-3 = tablettes
+  
+  // Paramètres Sol
+  const [temperatureGround, setTemperatureGround] = useState<number>(20);
+  const [soilResistivity, setSoilResistivity] = useState<number>(1.0);
+  
   const [grouping, setGrouping] = useState<number>(1);
   const [th3, setTh3] = useState<'<15' | '15-33' | '>33'>('<15');
   
@@ -18,12 +27,23 @@ export default function App() {
   const [cosPhi, setCosPhi] = useState<number>(0.8); // Facteur de puissance
   const [systemType, setSystemType] = useState<'mono' | 'tri'>('tri'); // Mono 230V ou Tri 400V
 
+  const handleEnvironmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const env = e.target.value as 'air' | 'ground';
+    setEnvironment(env);
+    if (env === 'ground') {
+      setMethod('D');
+    } else {
+      setMethod(cableType === 'multi' ? 'E' : 'F');
+    }
+  };
+
   const handleCableTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = e.target.value as 'multi' | 'mono';
     setCableType(newType);
-    // Bascule automatique de la méthode de référence selon le type de câble
-    if (newType === 'multi' && method === 'F') setMethod('E');
-    if (newType === 'mono' && method === 'E') setMethod('F');
+    if (environment === 'air') {
+      if (newType === 'multi' && method === 'F') setMethod('E');
+      if (newType === 'mono' && method === 'E') setMethod('F');
+    }
   };
 
   // --- CALCULS ---
@@ -31,16 +51,43 @@ export default function App() {
     const dataKey = `${material}-${insulation}-${method}`;
     const currentsArray = BASE_CURRENTS[dataKey] || [];
     
-    // Récupération des facteurs
-    const fTemp = TEMP_FACTORS[insulation][temperature] || 1;
-    
-    // Approximation pour les groupements non listés (ex: 11)
-    let groupKey = grouping;
-    if (!GROUP_FACTORS[groupKey]) {
-      const keys = Object.keys(GROUP_FACTORS).map(Number).sort((a, b) => a - b);
-      groupKey = keys.find(k => k >= grouping) || 20;
+    let fTemp = 1.0;
+    let fGroup = 1.0;
+    let fSoil = 1.0;
+
+    if (environment === 'air') {
+      fTemp = TEMP_FACTORS[insulation][temperatureAir] || 1;
+      
+      if (trayCount === 0) {
+        // Groupement standard (Tableau 52.E1)
+        let groupKey = grouping;
+        if (!GROUP_FACTORS[groupKey]) {
+          const keys = Object.keys(GROUP_FACTORS).map(Number).sort((a, b) => a - b);
+          groupKey = keys.find(k => k >= grouping) || 20;
+        }
+        fGroup = GROUP_FACTORS[groupKey] || 0.5;
+      } else {
+        // Groupement sur tablettes (Tableau 52.E2 / 52.E3)
+        const maxGroup = cableType === 'multi' ? 9 : 5; // Limites des tableaux
+        const safeGroup = Math.min(grouping, maxGroup);
+        if (cableType === 'multi') {
+          fGroup = GROUP_FACTORS_TRAYS_MULTI[trayCount]?.[safeGroup] || 0.7;
+        } else {
+          fGroup = GROUP_FACTORS_TRAYS_MONO[trayCount]?.[safeGroup] || 0.8;
+        }
+      }
+    } else {
+      // Environnement Sol
+      fTemp = TEMP_FACTORS_GROUND[insulation][temperatureGround] || 1;
+      fSoil = SOIL_RESISTIVITY_FACTORS[soilResistivity] || 1;
+      
+      let groupKey = grouping;
+      if (!GROUP_FACTORS_GROUND[groupKey]) {
+        const keys = Object.keys(GROUP_FACTORS_GROUND).map(Number).sort((a, b) => a - b);
+        groupKey = keys.find(k => k >= grouping) || 9;
+      }
+      fGroup = GROUP_FACTORS_GROUND[groupKey] || 0.5;
     }
-    const fGroup = GROUP_FACTORS[groupKey] || 0.5;
     
     // Facteur pour neutre chargé (TH3)
     let fNeutral = 1.0;
@@ -55,7 +102,7 @@ export default function App() {
     }
     
     // Facteur global
-    const fTotal = fTemp * fGroup * fNeutral;
+    const fTotal = fTemp * fGroup * fSoil * fNeutral;
 
     // Calculs pour chaque section
     const voltage = systemType === 'mono' ? 230 : 400;
@@ -96,8 +143,8 @@ export default function App() {
       };
     });
 
-    return { fTemp, fGroup, fNeutral, fTotal, adjustedIb, calculatedIz, optimalSection };
-  }, [material, insulation, method, temperature, grouping, th3, ib, length, cosPhi, systemType]);
+    return { fTemp, fGroup, fSoil, fNeutral, fTotal, adjustedIb, calculatedIz, optimalSection };
+  }, [environment, material, insulation, method, temperatureAir, temperatureGround, soilResistivity, trayCount, grouping, th3, ib, length, cosPhi, systemType]);
 
   return (
     <div className="min-h-screen bg-[#E4E3E0] text-[#141414] font-sans flex flex-col md:flex-row">
@@ -122,6 +169,14 @@ export default function App() {
               <Settings2 size={14} /> 1. Câble & Pose
             </h2>
             
+            <div>
+              <label className="block text-xs mb-1 text-gray-300">Environnement</label>
+              <select value={environment} onChange={handleEnvironmentChange} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
+                <option value="air">À l'air libre (Méthodes A, B, C, E, F)</option>
+                <option value="ground">Enterré (Méthode D)</option>
+              </select>
+            </div>
+
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="block text-xs mb-1 text-gray-300">Matériau</label>
@@ -149,12 +204,18 @@ export default function App() {
 
             <div>
               <label className="block text-xs mb-1 text-gray-300">Méthode de référence</label>
-              <select value={method} onChange={(e) => setMethod(e.target.value as any)} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                <option value="A">A (Encastré dans paroi isolante)</option>
-                <option value="B">B (Sous conduit en apparent)</option>
-                <option value="C">C (Fixé sur paroi)</option>
-                {cableType === 'multi' && <option value="E">E (Sur chemin de câble perforé)</option>}
-                {cableType === 'mono' && <option value="F">F (Câbles jointifs sur tablette)</option>}
+              <select value={method} onChange={(e) => setMethod(e.target.value as any)} disabled={environment === 'ground'} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26] disabled:opacity-50">
+                {environment === 'ground' ? (
+                  <option value="D">D (Câbles enterrés)</option>
+                ) : (
+                  <>
+                    <option value="A">A (Encastré dans paroi isolante)</option>
+                    <option value="B">B (Sous conduit en apparent)</option>
+                    <option value="C">C (Fixé sur paroi)</option>
+                    {cableType === 'multi' && <option value="E">E (Sur chemin de câble perforé)</option>}
+                    {cableType === 'mono' && <option value="F">F (Câbles jointifs sur tablette)</option>}
+                  </>
+                )}
               </select>
             </div>
           </div>
@@ -165,20 +226,87 @@ export default function App() {
               2. Environnement
             </h2>
             
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-xs mb-1 text-gray-300">Température</label>
-                <select value={temperature} onChange={(e) => setTemperature(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
-                  {[10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(t => (
-                    <option key={t} value={t}>{t} °C</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs mb-1 text-gray-300">Groupement</label>
-                <input type="number" min="1" max="20" value={grouping} onChange={(e) => setGrouping(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]" />
-              </div>
-            </div>
+            {environment === 'air' ? (
+              <>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs mb-1 text-gray-300">Température</label>
+                    <select value={temperatureAir} onChange={(e) => setTemperatureAir(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
+                      {[10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(t => (
+                        <option key={t} value={t}>{t} °C</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs mb-1 text-gray-300">Groupement (Nb de circuits)</label>
+                    <select value={grouping} onChange={(e) => setGrouping(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
+                      <option value="1">1 circuit (Seul)</option>
+                      <option value="2">2 circuits</option>
+                      <option value="3">3 circuits</option>
+                      <option value="4">4 circuits</option>
+                      <option value="5">5 circuits</option>
+                      <option value="6">6 circuits</option>
+                      <option value="7">7 circuits</option>
+                      <option value="8">8 circuits</option>
+                      <option value="9">9 circuits</option>
+                      <option value="10">10 circuits</option>
+                      <option value="12">12 circuits</option>
+                      <option value="14">14 circuits</option>
+                      <option value="16">16 circuits</option>
+                      <option value="18">18 circuits</option>
+                      <option value="20">20 circuits</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs mb-1 text-gray-300">Disposition (Tablettes/Échelles)</label>
+                  <select value={trayCount} onChange={(e) => setTrayCount(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
+                    <option value="0">Standard (Paroi, Goulotte...)</option>
+                    <option value="1">1 tablette / chemin de câble</option>
+                    <option value="2">2 tablettes superposées</option>
+                    <option value="3">3 tablettes superposées</option>
+                  </select>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs mb-1 text-gray-300">Température Sol</label>
+                    <select value={temperatureGround} onChange={(e) => setTemperatureGround(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
+                      {[10, 15, 20, 25, 30].map(t => (
+                        <option key={t} value={t}>{t} °C</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs mb-1 text-gray-300">Groupement (Nb de circuits)</label>
+                    <select value={grouping} onChange={(e) => setGrouping(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
+                      <option value="1">1 circuit (Seul)</option>
+                      <option value="2">2 circuits</option>
+                      <option value="3">3 circuits</option>
+                      <option value="4">4 circuits</option>
+                      <option value="5">5 circuits</option>
+                      <option value="6">6 circuits</option>
+                      <option value="7">7 circuits</option>
+                      <option value="8">8 circuits</option>
+                      <option value="9">9 circuits</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs mb-1 text-gray-300">Résistivité thermique du sol</label>
+                  <select value={soilResistivity} onChange={(e) => setSoilResistivity(Number(e.target.value))} className="w-full bg-[#222429] border border-gray-700 rounded p-2 text-sm text-white focus:outline-none focus:border-[#F27D26]">
+                    <option value="0.4">0.4 K.m/W (Très humide)</option>
+                    <option value="0.7">0.7 K.m/W (Humide)</option>
+                    <option value="1.0">1.0 K.m/W (Normal/Standard)</option>
+                    <option value="1.5">1.5 K.m/W (Sec)</option>
+                    <option value="2.0">2.0 K.m/W (Très sec)</option>
+                    <option value="3.0">3.0 K.m/W (Cendres/Mâchefer)</option>
+                  </select>
+                </div>
+              </>
+            )}
 
             <div>
               <label className="block text-xs mb-1 text-gray-300">Taux d'harmoniques (TH3) - Neutre</label>
@@ -245,7 +373,7 @@ export default function App() {
           </header>
 
           {/* Cartes des facteurs */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
               <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">Température</div>
               <div className="text-2xl font-light font-mono">{results.fTemp.toFixed(2)}</div>
@@ -254,6 +382,12 @@ export default function App() {
               <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">Groupement</div>
               <div className="text-2xl font-light font-mono">{results.fGroup.toFixed(2)}</div>
             </div>
+            {environment === 'ground' && (
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">Sol (Résistivité)</div>
+                <div className="text-2xl font-light font-mono">{results.fSoil.toFixed(2)}</div>
+              </div>
+            )}
             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
               <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">Neutre (TH3)</div>
               <div className="text-2xl font-light font-mono">{results.fNeutral.toFixed(2)}</div>
