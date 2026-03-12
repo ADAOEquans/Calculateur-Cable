@@ -17,7 +17,7 @@
 - **Paramètres avancés**
   - Matériaux : Cuivre (Cu), Aluminium (Al)
   - Isolants : PVC, PR/EPR
-  - Méthodes de pose (A1, A2, B1, B2, C, D, E, F, G)
+  - Méthodes de pose (A1, A2, B1, B2, C, D, E, F, G) // BUG DETECTE // EN COURS DE CORRECTION
   - Réseau Monophasé (230V) ou Triphasé (400V)
   - Taux d'harmoniques TH3 (4 cas normatifs)
   - Groupement de circuits (1 à 9+ circuits, selon Tableau 52N)
