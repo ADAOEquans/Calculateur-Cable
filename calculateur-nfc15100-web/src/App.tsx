@@ -14,7 +14,6 @@ import {
   type MaterialType, 
   type InsulationType, 
   type PoseMethod, 
-  type ConductorCount, 
   type NetworkType,
   type CircuitType,
   type AGCPCaliber
