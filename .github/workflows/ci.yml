@@ -1,35 +1,65 @@
-name: CI (Intégration Continue)
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
+    branches:
+      - main
+
+  # Permet de déclencher le workflow manuellement depuis l'interface GitHub
+  workflow_dispatch:
+
+# Permissions nécessaires pour déployer sur GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul déploiement à la fois
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  build-and-test:
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Récupère le code source depuis votre dépôt GitHub
-    - name: Checkout du code
-      uses: actions/checkout@v4
+      - name: Checkout du code
+        uses: actions/checkout@v4
 
-    # 2. Installe l'environnement Node.js
-    - name: Configuration de Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x' # Utilise la version 20 de Node
-        cache: 'npm'         # Met en cache les dépendances pour accélérer les futurs lancements
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: calculateur-nfc15100-web/package-lock.json
 
-    # 3. Installe les dépendances du projet (équivalent de npm install)
-    - name: Installation des dépendances
-      run: npm ci
+      - name: Installation des dépendances
+        working-directory: calculateur-nfc15100-web
+        run: npm ci
 
-    # 4. Vérifie la syntaxe et la qualité du code
-    - name: Vérification du code (Lint)
-      run: npm run lint
+      - name: Build de production
+        working-directory: calculateur-nfc15100-web
+        run: npm run build
 
-    # 5. Teste la compilation du projet pour s'assurer qu'il n'y a pas d'erreur fatale
-    - name: Compilation du projet (Build)
-      run: npm run build
+      - name: Configuration de GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload de l'artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: calculateur-nfc15100-web/dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Déploiement sur GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

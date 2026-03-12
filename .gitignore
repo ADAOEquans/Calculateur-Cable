@@ -1,8 +1,25 @@
+# Build outputs
 node_modules/
 build/
 dist/
 coverage/
+
+# OS & Editor
 .DS_Store
 *.log
+Thumbs.db
+
+# Environment / Secrets
 .env*
 !.env.example
+
+# Large/copyrighted reference documents (not part of the source code)
+*.pdf
+
+# Development utility scripts and their outputs
+search_pdf.py
+matches.txt
+metadata.json
+
+# AI Studio artifacts
+.env.example
