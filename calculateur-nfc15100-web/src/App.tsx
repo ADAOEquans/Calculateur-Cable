@@ -273,10 +273,15 @@ function App() {
                   value={poseMethod} onChange={(e) => setPoseMethod(e.target.value as PoseMethod)}
                   className="w-full bg-[#1c1c1c] border border-neutral-700/50 rounded-lg px-3 py-2 text-sm focus:border-orange-500 outline-none transition-all truncate"
                 >
+                  <option value="A1">A1 (Dans conduit en paroi isolante)</option>
+                  <option value="A2">A2 (Dans conduit en paroi non isolante)</option>
+                  <option value="B1">B1 (Dans conduit en apparent)</option>
+                  <option value="B2">B2 (Dans conduit encastré)</option>
+                  <option value="C">C (En saillie sur paroi)</option>
+                  <option value="D">D (Enterré dans le sol)</option>
                   <option value="E">E (Sur chemin de câble perforé)</option>
-                  <option value="B">B (Encastré dans les parois)</option>
-                  <option value="C">C (En saillie/Sur chemin de câble non perforé)</option>
-                  <option value="F">F (Sur corbeaux/Echelles à câbles)</option>
+                  <option value="F">F (Sur chemin de câble non perforé/corbeaux)</option>
+                  <option value="G">G (Câbles unipolaires espacés)</option>
                 </select>
               </div>
             </div>
