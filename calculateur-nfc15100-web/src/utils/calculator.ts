@@ -1,15 +1,10 @@
 import { 
-    type MaterialType, 
-    type InsulationType, 
-    type PoseMethod, 
-    type ConductorCount, 
-    type NetworkType,
-    type CircuitType,
-    type AGCPCaliber,
+    type CalculationInput,
     sections, 
     table52_8A, 
     table52_8B, 
     getTempCorrectionFactor,
+    getModeDePose,
     RHO_CU,
     RHO_AL,
     LAMBDA
@@ -34,6 +29,9 @@ export interface CalculationResult {
         k1: number;
         k2: number;
         fNeutre: number;
+        kSun: number;
+        kExplosion: number;
+        kSoil: number;
         fGlobal: number;
     };
     networkVoltage: number;
@@ -41,32 +39,48 @@ export interface CalculationResult {
 }
 
 export const calculateAllSections = (
-    currentIb: number,
-    material: MaterialType,
-    insulation: InsulationType,
-    poseMethod: PoseMethod,
-    conductorCount: ConductorCount,
-    temperature: number,
-    groupingFactor: number,
-    th3Factor: number,
-    network: NetworkType,
-    length: number,
-    cosPhi: number,
-    circuitType: CircuitType = 'Standard',
-    agcpCaliber?: AGCPCaliber
+    input: CalculationInput,
+    circuitType: 'Standard' | 'Branchement' = 'Standard',
+    agcpCaliber?: 30 | 45 | 60 | 90
 ): CalculationResult => {
     
+    const {
+        material, insulation, modeId, conductorCount, temperature,
+        groupingCircuits, th3Factor, network, currentIb, length, cosPhi,
+        sunExposure, explosionRisk, soilResistivity
+    } = input;
+
     // Physical Constants
     const rho = material === 'Cu' ? RHO_CU : RHO_AL;
     const b = network === 'Mono' ? 2 : Math.sqrt(3);
     const vNom = network === 'Mono' ? 230 : 400;
     const sinPhi = Math.sqrt(1 - Math.pow(cosPhi, 2));
 
+    const mode = getModeDePose(modeId);
+    if (!mode) {
+        return { analyses: [], optimalSection: null, factors: { k1: 1, k2: 1, fNeutre: 1, kSun: 1, kExplosion: 1, kSoil: 1, fGlobal: 1 }, networkVoltage: vNom, error: "Mode de pose invalide" };
+    }
+
     // Correction Factors
-    const k1 = getTempCorrectionFactor(temperature, insulation);
-    const k2 = groupingFactor;
+    const k1 = getTempCorrectionFactor(temperature, insulation, mode.environment);
+    // Le k2 (groupingCircuits) est déjà le facteur sélectionné depuis l'UI dans input.groupingCircuits
+    const k2 = groupingCircuits; 
     const fNeutre = th3Factor;
-    const fGlobal = k1 * k2 * fNeutre;
+    
+    // Facteurs spécifiques
+    const kSun = sunExposure ? 0.85 : 1.0; // Tableau 512.2.11 (Approximation)
+    const kExplosion = explosionRisk ? 0.85 : 1.0; // BE3 (Tableau 42.3 : facteur 0.85 à moduler selon cas)
+    
+    // Pour le sol (Tableau 52.11), 1 K.m/W = 1.0. Si résistivité > 1, k<1.
+    let kSoil = 1.0;
+    if (mode.environment === 'Enterré' && soilResistivity) {
+        if (soilResistivity === 1.5) kSoil = 0.9;
+        if (soilResistivity === 2.0) kSoil = 0.8;
+        if (soilResistivity === 2.5) kSoil = 0.72;
+        if (soilResistivity === 3.0) kSoil = 0.65;
+    }
+
+    const fGlobal = k1 * k2 * fNeutre * kSun * kExplosion * kSoil;
 
     const table = insulation === 'PVC' ? table52_8A : table52_8B;
     const analyses: SectionAnalysis[] = [];
@@ -85,8 +99,11 @@ export const calculateAllSections = (
         else if (agcpCaliber === 90) minSectionNorme = Math.max(minSectionNorme, 25);
     }
 
+    // Reference method to use for Iz lookup
+    const refMethod = mode.referenceMethod;
+
     for (const s of sections) {
-        let izBase = table[s]?.[poseMethod]?.[conductorCount] || 0;
+        let izBase = table[s]?.[refMethod]?.[conductorCount] || 0;
         
         // Material adjustment factor for Al if using Cu tables (Simplified approach)
         if (material === 'Al') {
@@ -135,8 +152,12 @@ export const calculateAllSections = (
             k1,
             k2,
             fNeutre,
+            kSun,
+            kExplosion,
+            kSoil,
             fGlobal
         },
         networkVoltage: vNom
     };
 };
+

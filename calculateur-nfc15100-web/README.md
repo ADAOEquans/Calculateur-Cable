@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# Calculateur Iz & ΔU - Norme NF C 15-100
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Version](https://img.shields.io/badge/version-2.0.0-orange.svg)
+![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)
 
-Currently, two official plugins are available:
+Une application web moderne et performante pour le dimensionnement des canalisations électriques selon la norme **NF C 15-100** (édition 2024).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Fonctionnalités
 
-## React Compiler
+- **Calcul d'Intensité Admissible (Iz)** : Intégration complète des Tableaux 52.8 à 52.18.
+- **Modes de Pose Dynamiques** : Support des modes 1 à 74 avec filtrage intelligent par type de câble (Mono/Multiconducteur).
+- **Chute de Tension (ΔU)** : Calcul précis en monophasé et triphasé incluant le Cos(φ) et la réactance.
+- **Facteurs Correcteurs Avancés** : 
+  - Température ambiante / Sol.
+  - Facteur de groupement ($k_2$).
+  - Taux d'harmoniques (TH3) avec les 4 cas normatifs.
+  - Rayonnement solaire direct.
+  - Risque d'explosion (BE3).
+- **Conformité Normative** : 
+  - Sections minimales (Alu 10mm² min).
+  - Branchement AGCP (10, 16, 25 mm²).
+- **Persistence des données** : Sauvegarde et chargement de configurations via des fichiers `.adsciz`.
+- **Interface Premium** : Design sombre réactif, dashboard d'analyse et tableau de résultats synthétique.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Installation et Démarrage
 
-## Expanding the ESLint configuration
+### Pré-requis
+- [Node.js](https://nodejs.org/) (version 18 ou supérieure)
+- npm (installé avec Node.js)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+```bash
+git clone https://github.com/votre-compte/Calculateur-Cable.git
+cd Calculateur-Cable/calculateur-nfc15100-web
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Démarrage en mode développement
+```bash
+npm run dev
 ```
+L'application sera accessible sur `http://localhost:5173/`.
+
+### Construction pour la production
+```bash
+npm run build
+```
+Les fichiers générés se trouveront dans le dossier `dist/`.
+
+## 📖 Utilisation
+
+1. **Configuration du Câble** : Choisissez le matériau, l'isolant et le type de câble.
+2. **Mode de Pose** : Sélectionnez le numéro de mode correspondant à votre installation.
+3. **Environnement** : Ajustez la température et les facteurs de groupement.
+4. **Paramètres Circuit** : Saisissez l'intensité d'emploi (Ib), la longueur et le Cos(φ).
+5. **Analyse** : Obtenez immédiatement la section optimale et les détails de conformité.
+
+## 📝 Licence
+
+Ce projet est sous licence **GPL-3.0**. Consultez le fichier `LICENSE` pour plus de détails.
+
+---
+*Développé pour la conformité électrique professionnelle.*

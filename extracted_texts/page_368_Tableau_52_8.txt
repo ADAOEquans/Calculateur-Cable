@@ -1,0 +1,112 @@
+NF C 15-100-1  Partie  5-52 
+366 Tableau 52.8F – Méthodes de référence E ou F  
+ 
+ 
+ 
+ 
+ 
+a L'attention doit se porter sur des parcours verticaux et dans des conditions limitées de ventilation. La température 
+ambiante au sommet du parcours vertical peut être considé rablement augmentée.  
+b De est le diamètre extérieur d'un CÂBLE MULTICONDUCTEUR . Il est considéré comme égal à  : 
+ – 2,2 fois le diamètre d'un câble lorsque 3 CÂBLES MONOCONDUCTEURS  sont disposés en trèfle  ; ou 
+ – 3 fois le diamètre d'un câble lorsque 3 CÂBLES MONOCONDUCTEURS  sont posés côte à côte.  
+c  La tolérance de 5% sur l’intensité admissible n’est pas applicable sur les poses en nappe (voir 523.1.2 ) 
+Dans le cas de groupement de câbles et de conduits de diamètres différents, De est le diamètre le plus im portant.  
+Le chiffre  2 après PR (polyéthylène réticulé) ou PVC (polychlorure de vinyle) est relatif à un circuit 
+monophasé ou biphasé.  
+Le chiffre  3 après PR ou PVC est relatif à un circuit triphasé.  
+Les références de mode de pose en italique correspondent à  celles de la NF  C 15-100:2002.  
+Pour les rayonnements solaires, voir  523.4 .  Réf. Mode de pose  Description  
+31 
+(13) 
+ 
+< > < >  0,3 De 
+ 0,3 De 
+ Câbles mono ou 
+multiconducteurs 
+sur des chemins 
+de câbles 
+perforés 
+horizontaux ou 
+verticauxa, b 
+32 
+(14) 
+ 
+< > < >  0,3 De 
+ 0,3 De 
+ Câbles mono ou 
+multiconducteurs 
+sur des treillis 
+horizontaux ou 
+verticauxa, b ou 
+des corbeaux.  
+34 
+(16) 
+ Câbles mono ou 
+multiconducteurs 
+suspendus sur 
+échelles à 
+câblesa. 
+35 
+(17) 
+ Câbles mono ou 
+multiconducteurs 
+suspendus à un 
+câble porteur ou 
+autoporteur.  Inten sité admissible  (A) 
+E 
+Multi -
+conducteur  
+PVC 2  
+PR 2  
+PVC 3  
+PR 3  
+      
+F 
+Mono -
+conducteur      
+PVC 2  
+PR 2  
+PVC 3  
+(en trèfle)  
+PR 3  
+(en trèfle)  
+PVC 3 c ) 
+(en nappe)  
+PR 3 c)  
+(en nappe)  
+Section            CUIVRE  1,5 22 26 18,5 23 23 - 19,5 24 - - 
+2,5 30 36 25 32 31 - 27 33 - - 
+4 40 49 34 42 42 - 36 45 - - 
+6 51 63 43 54 54 - 46 58 - - 
+10 70 86 60 75 75 - 63 80 - - 
+16 94 115 80 100 100 - 85 107 - - 
+25 119 149 101 127 131 161 110 135 114 141 
+35 148 185 126 158 162 200 137 169 143 176 
+50 180 225 153 192 196 242 167 207 174 216 
+70 232 289 196 246 251 310 216 268 225 279 
+95 282 352 238 298 304 377 264 328 275 342 
+120 328 410 276 346 352 437 308 383 321 400 
+150 379 473 319 399 406 504 356 444 372 464 
+185 434 542 364 456 463 575 409 510 427 533 
+240 514 641 430 538 546 679 485 607 507 634 
+300 593 741 497 621 629 783 561 703 587 736 
+400 - - - - 754 940 656 823 689 868 
+500 - - - - 868 1083  749 946 789 998 
+630 - - - - 1005  1254  855 1088  905 1151  ALUMINIUM  10 54 67 46 58 58 - 49 62 - - 
+16 73 91 61 77 77 - 66 84 - - 
+25 89 108 78 97 97 121 84 103 87 107 
+35 111 135 96 120 120 150 105 129 109 135 
+50 135 164 117 146 146 184 128 159 133 165 
+70 173 211 150 187 187 237 166 206 173 215 
+95 210 257 183 227 227 289 203 253 219 264 
+120 244 300 212 263 263 337 237 296 247 308 
+150 282 346 245 304 304 389 274 343 287 358 
+185 322 397 280 347 347 447 315 395 330 413 
+240 380 470 330 409 409 530 375 471 392 492 
+300 439 543 381 471 471 613 434 547 455 571 
+400 - - - - 600 740 526 663 552 694 
+500 - - - - 694 856 610 770 640 806 
+630 - - - - 808 996 711 899 746 942 
+AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08

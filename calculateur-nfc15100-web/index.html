@@ -7,17 +7,7 @@
     <title>Calculateur Iz & ΔU - Norme NF C 15-100</title>
   </head>
   <body>
-    <div id="error-log" style="color: red; padding: 20px; font-family: monospace; white-space: pre-wrap; z-index: 9999; position: absolute; background: rgba(0,0,0,0.8);"></div>
-    <script>
-      window.addEventListener('error', (event) => {
-        document.getElementById('error-log').textContent += '\n[Global Error]: ' + event.error?.stack;
-      });
-      const oldError = console.error;
-      console.error = function(...args) {
-        document.getElementById('error-log').textContent += '\n[Console Error]: ' + args.join(' ');
-        oldError.apply(console, args);
-      };
-    </script>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

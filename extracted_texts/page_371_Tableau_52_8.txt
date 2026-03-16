@@ -1,0 +1,70 @@
+Partie  5-52   NF C 15-100-1 
+369 
+ Tableau 52.8H.2 – Méthodes de référence D2  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+La tolérance de 5  % sur l’intensité admissible n’est pas applicable sur le  Tableau  52.8H.2 
+(voir  523.1.2 ). 
+Le chiffre  2 après PR (polyéthylène réticulé) ou PVC (polychlorure de vinyle) est relatif à un circuit 
+monophasé ou biphasé.  
+Le chiffre  3 après PR ou PVC est relatif à un circuit triphasé.  
+En France, la résistivité thermique du sol pour les terrains secs est généralement plus proche 
+de 1 K.m/W. Dans ce cas un facteur de correction est à appliquer selon le Tableau  52.11 . 
+Les références de mode  de pose en italique correspondent à celles de la NF  C 15-100:2002.  
+ Réf. Mode de pose  Description  
+72 
+ (62) 
+ Câbles mono ou 
+multiconducteurs enterrés 
+sans  protection mécanique 
+complémentaire.  
+73 
+ (63)  Câbles mono ou 
+multiconducteurs enterrés 
+avec protection mécanique 
+complémentaire.  
+ Intensité admissible  (A) 
+Section  PVC 3  PVC 2  PR 3  PR 2  CUIVRE  1,5 19 22 23 27 
+2,5 24 28 30 35 
+4 33 38 39 46 
+6 41 48 49 58 
+10 54 64 65 77 
+16 70 83 84 100 
+25 92 110 107 129 
+35 110 132 129 155 
+50 130 156 153 183 
+70 162 192 188 225 
+95 193 230 226 270 
+120 220 261 257 306 
+150 246 293 287 343 
+185 278 331 324 387 
+240 320 382 375 448 
+300 359 427 419 502 ALUMINIUM  10 - - - - 
+16 53 63 64 76 
+25 69 82 82 98 
+35 83 98 98 117 
+50 99 117 117 139 
+70 122 145 144 170 
+95 148 173 172 204 
+120 169 200 197 233 
+150 189 224 220 261 
+185 214 255 250 296 
+240 250 298 290 343 
+300 282 336 326 386 
+AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08

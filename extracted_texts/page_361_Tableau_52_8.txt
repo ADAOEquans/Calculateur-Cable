@@ -1,0 +1,107 @@
+Partie  5-52   NF C 15-100-1 
+359 
+ 
+Tableau 52.8C – Méthode de référence B1  
+ 
+ 
+  Réf. Mode de pose  Description  
+4 
+(3) 
+ Conducteurs isolés ou 
+câbles monoconducteurs 
+dans des conduits en 
+montage apparent.  
+6 
+ (31) 
+ (4)  Conducteu rs isolés ou 
+câbles 
+monoconducteurs dans 
+des GOULOTTES  ou 
+conduits -profilés fixés 
+sur une paroi en 
+parcours horizontal.  
+7 
+ (32)  Conducteurs isolés ou 
+câbles monoconducteurs 
+dans des GOULOTTES  ou 
+conduits -profilés fixés sur 
+une paroi en parcours 
+vertical . 
+10 
+ (34) 
+ Conducteurs isolés ou 
+câbles monoconducteurs 
+dans des GOULOTTES  
+suspendues.  
+40 
+ (21) 
+V
+De
+  De V  Câbles mono ou 
+multiconducteurs dans 
+des VIDES DE 
+CONSTRUCTION . 
+Mode de pose 40 répertorié 
+aussi en méthode B2 pour 
+1,5 De ≤ V < 5 De 5 D e ≤ V < 20 De 
+41 
+ (22) 
+VDe
+   De V  Conducteurs isolés dans 
+des conduits dans des 
+VIDES DE CONSTRUCTIO N. 
+Mode de pose 41 répertorié 
+aussi en méthode B2 pour 
+1,5 De ≤ V < 20 De V ≥ 20 De 
+42 
+ (22A)   Câbles mono ou 
+multiconducte urs dans 
+des conduits dans des 
+VIDES DE CONSTRUCTIO N. 
+Mode de pose 42 répertorié 
+aussi en méthode B2 pour 
+1,5 De ≤ V < 20 De V ≥ 20 De 
+43 
+ (23) 
+VDe
+   De V  Conducteurs isolés dans 
+des conduits -profilés dans 
+des vides de construction.  
+Mode de pose 43 répertorié 
+aussi en méthode B2 pour 
+1,5 De ≤ V < 20 De V ≥ 20 De Intensité admissible  (A) 
+Section  PVC 3  PVC 2  PR 3  PR 2  CUIVRE  1,5 15,5 17,5 20 23 
+2,5 21 24 28 31 
+4 28 32 37 42 
+6 36 41 48 54 
+10 50 57 66 75 
+16 68 76 88 100 
+25 89 101 117 133 
+35 110 125 144 164 
+50 134 151 175 198 
+70 171 192 222 253 
+95 207 232 269 306 
+120 239 269 312 354 
+150 262 300 342 393 
+185 296 341 384 449 
+240 346 400 450 528 
+300 394 458 514 603 
+400 - - - 745 
+500 - - - 859 
+630 - - - 995 ALUMINIUM  10 39 44 52 59 
+16 53 60 71 79 
+25 70 79 93 105 
+35 86 97 116 130 
+50 104 118 140 157 
+70 133 150 179 200 
+95 161 181 217 242 
+120 186 210 251 281 
+150 204 234 267 307 
+185 230 266 300 351 
+240 269 312 351 412 
+300 306 358 402 471 
+400 - - - 566 
+500 - - - 652 
+630 - - - 755 
+AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08
