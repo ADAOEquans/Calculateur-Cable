@@ -1,0 +1,44 @@
+Partie 5 -52 NF C 15 -100-1 
+379 
+ Tableau 52.17 – Facteurs de correction  pour conduits enterrés  
+disposés horizontalement et verticalement à raison d'un câble ou  
+d'un groupement de 3  câbles monoconducteurs par conduit –  
+Méthode de référence  D1 des modes de pose 70 et 71 du Tableau  52.8H.1 (suite)  
+B) Câbles monoconducteurs dans  un conduit non magnétique 
+Nombre de circuits 
+de deux ou  
+trois câbles 
+monoconducteurs  Distance entre conduitsb 
+Nulle  
+(conduits jointifs)  0,25 m  0,5 m  1,0 m  
+2 0,80  0,90  0,90  0,95  
+3 0,70  0,80  0,85  0,90  
+4 0,65  0,75  0,80  0,90  
+5 0,60  0,70  0,80  0,90  
+6 0,60  0,70  0,80  0,90  
+7 0,53  0,66  0,76  0,87  
+8 0,50  0,63  0,74  0,87  
+9 0,47  0,61  0,73  0,86  
+10 0,45  0,59  0,72  0,85  
+11 0,43  0,57  0,70  0,85  
+12 0,41  0,56  0,69  0,84  
+13 0,39  0,54  0,68  0,84  
+14 0,37  0,53  0,68  0,83  
+15 0,35  0,52  0,67  0,83  
+16 0,34  0,51  0,66  0,83  
+17 0,33  0,50  0,65  0,82  
+18 0,31  0,49  0,65  0,82  
+19 0,30  0,48  0,64  0,82  
+20 0,29  0,47  0,63  0,81  
+A) CÂBLES MULTICONDUCTEUR S 
+a    a 
+ 
+B) CÂBLES MONOCONDUCTEURS  
+ 
+Si un circuit est constitué de n conducteurs en parallèle par phase, alors le fa cteur de réduction de ce circuit doit être 
+déterminé en considérant n circuits.  
+Lorsqu’il existe x conduits verticaux et y conduits horizontaux, le facteur de correction à appliquer est le produit du 
+facteur de correction pour x conduits horizontaux par le  facteur de correction pour y conduits verticaux.  
+  
+AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08

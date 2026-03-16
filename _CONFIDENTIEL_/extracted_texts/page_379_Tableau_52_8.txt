@@ -1,0 +1,43 @@
+Partie 5 -52 NF C 15 -100-1 
+377 
+ 523.5.2  Groupement de câbles et de conduits enterrés  
+Lorsque des CONDUITS  ou des CÂBLES  sont posés dans le sol, les courants admissibles des 
+CONDUCTEURS  sont réduits en appliquant les facteurs de correction des Tableaux  52.16 , 52.17 
+et 52.18 . 
+Tableau 52 .16 – Facteurs de correction de groupement de  
+plusieurs circuits, câbles directement enterrés – 
+Méthode de référence  D2 des modes de pose 72 et 73 –  
+Tableau 52.8H.2 – 
+Câbles monoconducteurs ou multiconducteurs  
+Nombre  
+de circuits  Distance entre câblesa 
+Nulle  
+(câbles jointifs)  Un diamètre  
+de câble  0,125 m  0,25 m  0,5 m  
+2 0,75  0,80  0,85  0,90  0,90  
+3 0,65  0,70  0,75  0,80  0,85  
+4 0,60  0,60  0,70  0,75  0,80  
+5 0,55  0,55  0,65  0,70  0,80  
+6 0,50  0,55  0,60  0,70  0,80  
+7 0,45  0,51  0,59  0,67  0,76  
+8 0,43  0,48  0,57  0,65 0,75  
+9 0,41  0,46  0,55  0,63  0,74  
+12 0,36  0,42  0,51  0,59  0,71  
+16 0,32  0,38  0,47  0,56  0,68  
+20 0,29  0,35  0,44  0,53  0,66  
+  a  CÂBLES MULTICONDUCTEUR S 
+a a   a 
+ a 
+ 
+ 
+  a  CÂBLES MONOCONDUCTEURS  
+ 
+ 
+Si un circuit est constitué de n CONDUCTEURS  en parallèle par phase, alors il convient de déterminer le facteur de 
+réduction de ce circuit en considérant n circuits.  
+  
+a 
+  
+a 
+  AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08
