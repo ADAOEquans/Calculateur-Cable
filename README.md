@@ -1,90 +1,63 @@
-# ⚡ Calculateur de Section de Câble — NF C 15-100
+# Calculateur Iz & ΔU - Norme NF C 15-100
 
-> Application web de calcul et de vérification de section de câble électrique selon la norme française **NF C 15-100**.
+![Version](https://img.shields.io/badge/version-2.0.0-orange.svg)
+![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)
 
-🌐 **Démo en ligne :** [https://adaoequans.github.io/Calculateur-Cable/](https://adaoequans.github.io/Calculateur-Cable/)
+Une application web moderne et performante pour le dimensionnement des canalisations électriques selon la norme **NF C 15-100** (édition 2024).
 
----
+## 🚀 Fonctionnalités
 
-## ✨ Fonctionnalités
+- **Calcul d'Intensité Admissible (Iz)** : Intégration complète des Tableaux 52.8 à 52.18.
+- **Modes de Pose Dynamiques** : Support des modes 1 à 74 avec filtrage intelligent par type de câble (Mono/Multiconducteur).
+- **Chute de Tension (ΔU)** : Calcul précis en monophasé et triphasé incluant le Cos(φ) et la réactance.
+- **Facteurs Correcteurs Avancés** : 
+  - Température ambiante / Sol.
+  - Facteur de groupement ($k_2$).
+  - Taux d'harmoniques (TH3) avec les 4 cas normatifs.
+  - Rayonnement solaire direct.
+  - Risque d'explosion (BE3).
+- **Conformité Normative** : 
+  - Sections minimales (Alu 10mm² min).
+  - Branchement AGCP (10, 16, 25 mm²).
+- **Persistence des données** : Sauvegarde et chargement de configurations via des fichiers `.adsciz`.
+- **Interface Premium** : Design sombre réactif, dashboard d'analyse et tableau de résultats synthétique.
 
-- **Calcul de l'intensité admissible (Iz)** — prise en compte des facteurs de correction (température, groupement, harmoniques TH3)
-- **Calcul de la chute de tension (ΔU)** — en volts et en pourcentage, selon la longueur et le cos(φ)
-- **Résultats synthétiques** — tableau complet avec statuts visuels : ✅ Optimal, 🔵 Valide, ❌ Invalide
-- **Conformité NF C 15-100**
-  - Section minimale automatique pour les conducteurs en Aluminium (≥ 10 mm²)
-  - Sections minimales pour les liaisons de branchement selon le calibre AGCP
-- **Paramètres avancés**
-  - Matériaux : Cuivre (Cu), Aluminium (Al)
-  - Isolants : PVC, PR/EPR
-  - Méthodes de pose (A1, A2, B1, B2, C, D, E, F, G)
-  - Réseau Monophasé (230V) ou Triphasé (400V)
-  - Taux d'harmoniques TH3 (4 cas normatifs)
-  - Groupement de circuits (1 à 9+ circuits, selon Tableau 52N)
-- **Sauvegarde / Chargement** — export et import de configurations au format `.adsciz`
+## 🛠️ Installation et Démarrage
 
----
+### Pré-requis
+- [Node.js](https://nodejs.org/) (version 18 ou supérieure)
+- npm (installé avec Node.js)
 
-## 🛠️ Technologies
-
-| Technologie | Rôle |
-|---|---|
-| [React 19](https://react.dev/) | Framework UI |
-| [Vite](https://vitejs.dev/) | Bundler et serveur de développement |
-| [TypeScript](https://www.typescriptlang.org/) | Typage fort |
-| [Tailwind CSS](https://tailwindcss.com/) | Styles |
-| [Lucide React](https://lucide.dev/) | Icônes |
-
----
-
-## 🚀 Lancer le projet en local
-
-**Prérequis :** [Node.js](https://nodejs.org/) v22+
-
+### Installation
 ```bash
-# 1. Cloner le dépôt
-git clone https://github.com/ADAOEquans/Calculateur-Cable.git
+git clone https://github.com/votre-compte/Calculateur-Cable.git
 cd Calculateur-Cable/calculateur-nfc15100-web
-
-# 2. Installer les dépendances
 npm install
+```
 
-# 3. Lancer le serveur de développement
+### Démarrage en mode développement
+```bash
 npm run dev
 ```
-
 L'application sera accessible sur `http://localhost:5173/`.
 
-### Scripts disponibles
-| Commande | Description |
-|---|---|
-| `npm run dev` | Serveur de développement (HMR) |
-| `npm run build` | Build de production optimisé |
-| `npm run preview` | Prévisualisation du build en local |
-| `npm run lint` | Vérification du code |
-
----
-
-## 📐 Architecture du projet
-
+### Construction pour la production
+```bash
+npm run build
 ```
-Calculateur-Cable/
-└── calculateur-nfc15100-web/   # Application React/Vite
-    ├── src/
-    │   ├── App.tsx             # Composant principal et UI
-    │   ├── data/
-    │   │   └── nfc15100.ts     # Données normatives (sections, Iz, facteurs)
-    │   └── utils/
-    │       └── calculator.ts   # Logique de calcul (Iz, ΔU, conformité)
-    └── ...
-```
+Les fichiers générés se trouveront dans le dossier `dist/`.
+
+## 📖 Utilisation
+
+1. **Configuration du Câble** : Choisissez le matériau, l'isolant et le type de câble.
+2. **Mode de Pose** : Sélectionnez le numéro de mode correspondant à votre installation.
+3. **Environnement** : Ajustez la température et les facteurs de groupement.
+4. **Paramètres Circuit** : Saisissez l'intensité d'emploi (Ib), la longueur et le Cos(φ).
+5. **Analyse** : Obtenez immédiatement la section optimale et les détails de conformité.
+
+## 📝 Licence
+
+Ce projet est sous licence **GPL-3.0**. Consultez le fichier `LICENSE` pour plus de détails.
 
 ---
-
-## 📄 Licence
-
-Ce projet est distribué sous licence **GPL v3**. Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
-
----
-
-*Application développée pour faciliter le travail quotidien des électriciens et des ingénieurs en installations basse tension.*
+*Développé pour la conformité électrique professionnelle.*

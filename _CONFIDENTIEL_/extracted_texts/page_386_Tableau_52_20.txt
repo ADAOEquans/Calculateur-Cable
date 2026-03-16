@@ -1,0 +1,36 @@
+NF C 15-100-1  Partie  5-52 
+384 524.2  Section du conducteur neutre  
+524.2.1  Le CONDUCTEUR NEUTRE  éventuel doit avoir la même section que les CONDUCTEURS  de 
+phase :  
+– dans les circuits monophasés à deux CONDUCTEURS , quelle que soit la section des 
+CONDUCTEURS  ; 
+– dans les circuits polyphasés dont les CONDUCTEURS  de phase ont une section au plus égale 
+à 16 mm² en cuivre ou 25  mm² en aluminium  ; 
+– dans les circuits triphasés susceptibles d'être parcourus par des courants harmoniques de 
+rang  3 et multiple de 3 dont le taux d'harmoniques est compris entre 15  % et 33  %. 
+Voir aussi 523.6.3 . 
+Ces taux d'harmoniques se rencontrent par exemple dans des circuits alimentant des LUMINAIRES . 
+524.2.2  Lorsque le taux d'harmoniques de rang  3 et multiple de 3 est supérieur à 33  % en 
+courant, le choix d'une section de neutre  supérieure à celle du CONDUCTEUR  de phase peut être 
+nécessaire.  
+Ces taux d'harmoniques peuvent être rencontrés dans certains circuits d'alimentation dédiés aux 
+appareils de traitement de l’information.  
+a) dans le cas d'utilisation de CÂBLES  MULTIPOLAIRES , la section des phases est égale à celle du 
+CONDUCTEUR NEUTRE , le calcul de cette section étant fait pour le courant dans le neutre suivant 
+le Tableau  52.20 (cas n°  3 et 4)  ; 
+b) dans le cas d'utilisation de CÂBLES  UNIPOLAIRES , la section des phases peut être cho isie 
+inférieure à celle du neutre, le calcul étant fait  : 
+– pour la phase  : pour son courant d'emploi  ; 
+– pour le neutre  : pour le courant d'emploi calculé suivant le Tableau  52.20 (cas n°  4). 
+524.2.3  Dans les circuits polyphasés dont les CONDUCTEURS  de phase ont une section supérieure 
+à 16  mm² en cuivre ou 25  mm² en aluminium, le CONDUCTEUR NEUTRE  peut avoir une section 
+inférieure à celle des CONDUCTEURS  de phase si les conditions suivantes sont simultanément 
+remplies  : 
+– la charge transportée par le circuit en service normal est supposée équilibrée et  le taux 
+d’harmoniques de rang  3 et multiple de 3 ne dépasse pas 15  % dans le CONDUCTEUR  de phase 
+(cas n° 1 du Tableau 52.20 ) ; 
+– le CONDUCTEUR NEUTRE  est protégé contre les SURINTENSITES  suivant les règles du 431.2  ; 
+– la section du CONDUCTEUR NEUTRE  est au moins égale à 16  mm² en cuivre ou  25 mm² en 
+aluminium.  
+  AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08

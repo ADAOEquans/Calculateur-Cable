@@ -1,25 +1,31 @@
-# Build outputs
-node_modules/
-build/
-dist/
-coverage/
-
-# OS & Editor
-.DS_Store
+# Logs
+logs
 *.log
-Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Environment / Secrets
-.env*
-!.env.example
+node_modules
+dist
+dist-ssr
+*.local
 
-# Large/copyrighted reference documents (not part of the source code)
-*.pdf
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Development utility scripts and their outputs
-search_pdf.py
-matches.txt
-metadata.json
+# Sensitive data
+_CONFIDENTIEL/
 
-# AI Studio artifacts
-.env.example
+# Local tests
+*.adsciz
+

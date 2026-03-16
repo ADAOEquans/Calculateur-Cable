@@ -1,0 +1,33 @@
+NF C 15-100-1  Partie  5-52 
+376 Tableau 52.14 – Facteurs de correction de groupement pour un ou plusieurs  
+circuits de câbles monoconducteurs à appliquer aux courants assignés  
+d’un circuit en câb les monoconducteurs posés à l'air libre – 
+Mode de pose de référence  F du Tableau  52.8F  (suite)  
+Les valeurs indiquées sont des moyennes pour les types de câbles et la gamme de sections pris en considération dans 
+le Tableau  52.8F . L'écart entre les valeurs e st généralement inférieur à 5  %. 
+Les facteurs sont applicables à des groupes de câbles en une seule couche (ou groupes en trèfles) tels que représentés 
+ci-dessus, mais ne peuvent s'appliquer à des câbles disposés en plusieurs couches jointives. Pour de tel les dispositions , 
+il convient d’ appliqu er en complément le Tableau  52.15 . 
+*  Les valeurs sont indiquées pour une distance verticale entre tablettes de 300  mm et à moins de 20  mm entre les 
+tablettes et le mur. Pour une distance verticale inférieure à 300 mm , il convient de réduire les facteurs par une 
+méthode de calcul appropriée ou en appliquant directement le Tableau  52.15 . Pour une distance verticale 
+supérieure à 300  mm, les facteurs peuvent être augmentés par une méthode de calcul appropriée.  
+**  Les val eurs sont indiquées pour une distance horizontale entre tablettes de 225  mm, les tablettes étant montées dos 
+à dos. Pour des distances plus faibles, il convient de réduire les facteurs.  
+Pour des circuits comportant plusieurs câbles en parallèle par phase, il convient que chaque groupe de trois 
+CONDUCTEURS  soit considéré comme un circuit pour l'application de ce tableau.  
+Si un circuit est constitué de m CONDUCTEURS  en parallèle par phase, alors il convient de déterminer le facteur de 
+réduction de ce circuit en considérant m circuits.  
+ 
+Tableau 52.15 – Facteurs de correction pour pose en plusieurs couches  
+pour les points 1 à 4 du Tableau 52.12  
+Lorsque les CÂBLES  sont disposés en plusieurs couches, les facteurs de correction suivants doivent 
+être appliqués aux valeurs de courants admissibles  : 
+Nombre de couches  1 2 3 4 ou 5  6 à 8  9 et plus  
+Coefficient  1,00  0,80  0,73  0,70  0,68  0,66  
+Ces facteurs de correction sont éventuellement à multiplier par ceux d es Tableau x 52.12  à 52.14 . 
+Les facteurs de correction pour gr oupement de CÂBLES  ont été calculés en supposant le 
+groupement constitué de CÂBLES  semblables également chargés. Lorsqu'un groupe contient des 
+CÂBLES  de dimensions et/ou de natures différentes, des précautions sont nécessaires pour la 
+charge des plus petit s. AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08

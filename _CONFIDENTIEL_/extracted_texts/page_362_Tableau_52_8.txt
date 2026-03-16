@@ -1,0 +1,84 @@
+NF C 15-100-1  Partie  5-52 
+360 Tableau 52.8C – Méthode de référence B1 (suite)  
+Réf. Mode de pose  Description  
+44 
+ (23A)  
+VDe
+  De V 
+ Câbles mono ou 
+multiconducteurs dans des 
+conduits -profilés dans des 
+VIDES DE CONSTRUCTIO N. 
+Mode de pose 44 répertorié 
+aussi  en méthode B2 pour  
+1,5 De ≤ V < 20 De 
+45 
+ (24) 
+V
+  V  
+5 De ≤ V < 50 De Conducteurs isolés dans des 
+conduits -profilés noyés dans 
+la construction.  
+Mode de pose 45 répertorié 
+aussi  en méthode B2 pour  
+1,5 De ≤ V < 5 De 
+46 
+ (24A)  
+     
+  De V  
+V ≥ 20  De Câbles mono ou 
+multiconducteurs dans des 
+conduits -profilés noyés dans 
+la construction.  
+Mode de pose 46 répertorié 
+aussi  en méthode B2 pour  
+1,5 De ≤ V < 20 De 
+47 
+ (25) 
+VDe
+  De V  
+5 De ≤ V < 50 De Câbles mono ou 
+multiconducteurs  : 
+− dans l'espace entre 
+plafond  
+et faux plafond  ; 
+− posés sur des faux 
+plafonds suspendus  ; 
+non démontables  
+− dans des planchers 
+surélevés.  
+Mode de pose 47 répertorié 
+aussi  en méthode B2 pour  
+1,5 De ≤ V < 5 De 
+50 
+ (33)  Conducteurs isolés ou câbles 
+monoconducteurs dans des 
+GOULOTTES  encastrées dans 
+des planchers.  
+52 
+ (33) 
+TV
+ISDN  TV 
+ICT 
+ Conducteurs isolés ou câbles 
+monoconducteurs dans des 
+GOULOTTES  affleurantes.  
+54 
+ (41)  
+ 
+ 
+ 
+ 
+ 
+V ≥ 20 De Conducteurs isolés dans des 
+conduits ou câbles avec ou 
+sans cond uits dans des 
+CANIVEAUX  non ventilés en 
+parcours horizontal ou vertical. 
+Mode de pose 54 répertorié 
+aussi  en méthode B2 pour  
+1,5 De ≤ V < 20 De 
+V 
+ De 
+V AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08

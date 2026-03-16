@@ -1,0 +1,20 @@
+﻿--- Page 358 : Tableau 52.8 ---
+urants admissibles lors du choix de la 
+section des conducteurs, exceptÚe sur les poses en nappe du Tableau 52.8F (modes de pose  31, 
+32, 34 et 35) et de lÆensemble du Tableau  52.8H.2 (mÚthode de rÚfÚre nce D2) (modes de pose  72 
+et 73). 
+Pour les C┬BLES  et CONDUCTEURS  non couverts par les Tableaux 52.8A Ó 52.8H , les courants 
+admissibles doivent Ûtre dÚterminÚs conformÚment  : 
+û Ó 523.1.3  ; ou 
+û aux spÚcifications du distributeur, constructeur ou importateur.  
+Les Tableaux  52.8A Ó 52.8H peuvent Ûtre appliquÚs aux C┬BLES  MULTICONDUCTEURS  avec armure.  
+Les valeurs des tableaux pour les C┬BLES  MULTICONDUCTEURS  peuvent Ûtre utilisÚes pour les 
+C┬BLES  armÚs Ó condition que chaque cÔble contienne tous les CONDUCTEURS  du circuit, les valeurs 
+prises par excÞs allant  dans le sens de la sÚcuritÚ.  
+Les Tableaux  52.8A Ó 52.8H ne sÆappliquent pas aux C┬BLES  MONOCONDUCTEURS  avec armure.  
+En effet, si des C┬BLES  MONOCONDUCTEURS  avec armure sont utilisÚs, une rÚduction apprÚciable 
+des courants admissibles indiquÚs dans cette norme peut Ûtre prescrite. Il convient de cons
+
+======================
+
+--- Page 361 : Tableau 52.8 ---

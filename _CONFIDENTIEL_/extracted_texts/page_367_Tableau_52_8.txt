@@ -1,0 +1,76 @@
+Partie  5-52   NF C 15-100-1 
+365 
+ Tableau 52.8E – Méthode de référence C  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+a L'attention doit se porter sur des parcours verticaux et dans des con ditions limitées de ventilation. La température 
+ambiante au sommet du parcours vertical peut être considérablement augmentée.  
+b De est le diamètre extérieur d'un CÂBLE MULTICONDUCTEUR  : 
+ – 2,2 fois le diamètre d'un câble lorsque 3 CÂBLES MONOCONDUCTEURS  sont disposés en trèfle  ; ou 
+ – 3 fois le diamètre d'un câble lorsque 3 CÂBLES MONOCONDUCTEURS  sont posés côte à côte.  
+Dans le cas de groupement de câbles et de conduits de diamètres différents, De est le diamètre le plus important.  
+Le chiffre  2 après PR (po lyéthylène réticulé) ou PVC (polychlorure de vinyle) est relatif à un circuit 
+monophasé ou biphasé.  
+Le chiffre  3 après PR ou PVC est relatif à un circuit triphasé.  
+Les références de mode de pose en italique correspondent à celles de la NF  C 15-100:2002.  
+  Réf. Mode de pose  Description  
+20 
+ (11) 
+ Câbles mono ou 
+multiconducteurs 
+fixés  sur un mur.  
+21 
+ (11A)  Câbl es mono ou 
+multiconducteurs 
+fixés  à un plafond.  
+30 
+ (12) 
+ 
+< > < >  0,3 De 
+ 0,3 De 
+ Câbles mono ou 
+multiconducteurs sur  
+les chemins de câbles 
+ou tablettes non perforés 
+horizontaux ou 
+verticauxa, b Intensité admissible  (A) 
+Section  PVC 3  PVC 2  PR 3  PR 2  CUIVRE  1,5 17,5 19,5 22 24 
+2,5 24 27 30 33 
+4 32 36 40 45 
+6 41 46 52 58 
+10 57 63 71 80 
+16 76 85 96 107 
+25 96 112 119 138 
+35 119 138 147 171 
+50 144 168 179 209 
+70 184 213 229 269 
+95 223 258 278 328 
+120 259 299 322 382 
+150 299 344 371 441 
+185 341 392 424 506 
+240 403 461 500 599 
+300 464 530 576 693 
+400 – – 692 835 
+500 – – 797 966 
+630 – – 923 1122  ALUMINIUM  10 44 49 57 62 
+16 59 66 76 84 
+25 73 83 90 101 
+35 90 103 112 126 
+50 110 125 136 154 
+70 140 160 174 198 
+95 170 195 211 241 
+120 197 226 245 280 
+150 227 261 283 324 
+185 259 298 323 371 
+240 305 352 382 439 
+300 351 406 440 508 
+400 – – 529 612 
+500 – – 610 707 
+630 – – 707 821 
+AFNOR  (Code siret : 89231831200022)
+EQUANS - ADAO DUARTE SERGE (serge.adao-duarte@equans.com) Pour : EQUANSNF C15-100-12024-08
