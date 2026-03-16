@@ -33,14 +33,12 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-          cache-dependency-path: calculateur-nfc15100-web/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Installation des dépendances
-        working-directory: calculateur-nfc15100-web
         run: npm ci
 
       - name: Build de production
-        working-directory: calculateur-nfc15100-web
         run: npm run build
 
       - name: Configuration de GitHub Pages
@@ -49,7 +47,7 @@ jobs:
       - name: Upload de l'artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: calculateur-nfc15100-web/dist
+          path: dist
 
   deploy:
     name: Deploy
